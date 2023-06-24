@@ -1,6 +1,6 @@
-import { RuleSetRule, RuleSetUseItem } from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
+import { RuleSetRule, RuleSetUseItem } from 'webpack';
 
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
@@ -8,8 +8,10 @@ const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
 
+type test = Exclude<RuleSetUseItem, string>;
+
 function buildStyleLoaders(cssLoaderOptions: Record<string, any>): RuleSetUseItem[] {
-    const loaders = [
+    const loaders: (string | Record<string, any>)[] = [
         {
             loader: MiniCssExtractPlugin.loader,
         },
@@ -18,6 +20,7 @@ function buildStyleLoaders(cssLoaderOptions: Record<string, any>): RuleSetUseIte
             options: { ...cssLoaderOptions, sourceMap: false },
         },
     ];
+    if (process.env.NODE_ENV === 'production') loaders.push('postcss-loader');
     return loaders;
 }
 
@@ -53,9 +56,7 @@ export const sassLoader: RuleSetRule = {
         ...buildStyleLoaders({
             importLoaders: 2,
         }),
-        {
-            loader: 'sass-loader',
-        },
+        'sass-loader',
     ],
 };
 
@@ -68,8 +69,6 @@ export const sassModuleLoader: RuleSetRule = {
                 getLocalIdent: getCSSModuleLocalIdent,
             },
         }),
-        {
-            loader: 'sass-loader',
-        },
+        'sass-loader',
     ],
 };

@@ -2,7 +2,6 @@ import React from 'react';
 import { Course } from 'src/shared/types/Course';
 import { UserSchedule } from 'src/shared/types/UserSchedule';
 import Card from 'src/views/components/common/Card/Card';
-import Divider from 'src/views/components/common/Divider/Divider';
 import Icon from 'src/views/components/common/Icon/Icon';
 import Link from 'src/views/components/common/Link/Link';
 import Text from 'src/views/components/common/Text/Text';
@@ -54,18 +53,19 @@ export default function CourseHeader({ course, activeSchedule, onClose }: Props)
                     const numInstructors = course.instructors.length;
                     const isLast = course.instructors.length > 1 && index === course.instructors.length - 1;
                     return (
-                        <>
+                        <span key={name}>
                             {numInstructors > 1 && index === course.instructors.length - 1 ? '& ' : ''}
-                            <Link key={name} size='medium' weight='normal' url={url}>
+                            <Link size='medium' weight='normal' url={url}>
                                 {name}
                             </Link>
                             {numInstructors > 2 && !isLast ? ', ' : ''}
-                        </>
+                        </span>
                     );
                 })}
             </Text>
-            {course.schedule.meetings.map(meeting => (
-                <Text size='medium' className={styles.meeting}>
+            {course.schedule.meetings.map((meeting, i) => (
+                // eslint-disable-next-line react/no-array-index-key -- meetings are not reactive
+                <Text size='medium' className={styles.meeting} key={i}>
                     <Text span size='medium' weight='bold' color='black'>
                         {meeting.getDaysString({
                             format: 'long',

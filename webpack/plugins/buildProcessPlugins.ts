@@ -1,15 +1,15 @@
-import path from 'path';
-import dotenv from 'dotenv';
-import webpack, { WebpackPluginInstance } from 'webpack';
-import { EntryId } from 'webpack/webpack.config';
-import CreateFileWebpack from 'create-file-webpack';
-import CopyWebpackPlugin from 'copy-webpack-plugin';
-import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
-import WebpackBuildNotifierPlugin from 'webpack-build-notifier';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
+import CreateFileWebpack from 'create-file-webpack';
+import dotenv from 'dotenv';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import HTMLWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import path from 'path';
+import webpack, { WebpackPluginInstance } from 'webpack';
+import WebpackBuildNotifierPlugin from 'webpack-build-notifier';
+import { EntryId } from 'webpack/webpack.config';
 import TypeErrorNotifierPlugin from './custom/TypeErrorNotifierPlugin';
 
 /**

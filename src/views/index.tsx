@@ -1,10 +1,10 @@
+import { ContextInvalidated, onContextInvalidated } from 'chrome-extension-toolkit';
 import React from 'react';
-import { render } from 'react-dom';
-import { ContextInvalidated, createShadowDOM, isExtensionPopup, onContextInvalidated } from 'chrome-extension-toolkit';
+import { createRoot } from 'react-dom/client';
 import CourseCatalogMain from './components/CourseCatalogMain';
-import colors from './styles/colors.module.scss';
-import getSiteSupport, { SiteSupport } from './lib/getSiteSupport';
 import PopupMain from './components/PopupMain';
+import getSiteSupport, { SiteSupport } from './lib/getSiteSupport';
+import colors from './styles/colors.module.scss';
 
 const support = getSiteSupport(window.location.href);
 if (!support) {
@@ -12,13 +12,18 @@ if (!support) {
 }
 
 if (support === SiteSupport.EXTENSION_POPUP) {
-    render(<PopupMain />, document.getElementById('root'));
+    createRoot(document.getElementById('root')!).render(<PopupMain />);
 }
 
 if (support === SiteSupport.COURSE_CATALOG_DETAILS || support === SiteSupport.COURSE_CATALOG_LIST) {
-    const shadowDom = createShadowDOM('ut-registration-plus-container');
-    render(<CourseCatalogMain support={support} />, shadowDom.shadowRoot);
-    shadowDom.addStyle('static/css/content.css');
+    // const shadowDom = createShadowDOM('ut-registration-plus-container');
+    // create non-shadow dom for now
+    const container = document.createElement('div');
+    container.id = 'ut-registration-plus-container';
+    document.body.appendChild(container);
+
+    createRoot(container).render(<CourseCatalogMain support={support} />);
+    // shadowDom.addStyle('static/css/content.css');
 }
 
 if (support === SiteSupport.WAITLIST) {
@@ -33,8 +38,7 @@ onContextInvalidated(() => {
     const div = document.createElement('div');
     div.id = 'context-invalidated-container';
     document.body.appendChild(div);
-    render(
-        <ContextInvalidated fontFamily='monospace' color={colors.white} backgroundColor={colors.burnt_orange} />,
-        div
+    createRoot(div).render(
+        <ContextInvalidated fontFamily='monospace' color={colors.white} backgroundColor={colors.burnt_orange} />
     );
 });

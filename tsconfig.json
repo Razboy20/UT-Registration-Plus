@@ -45,7 +45,8 @@
         "@types/**/*",
         "./package.json",
         "./release.config.js",
-        "webpack/plugins/custom/.ts"
+        "webpack/plugins/custom/.ts",
+        "postcss.config.cjs",
     ],
     "exclude": [
         "node_modules",
